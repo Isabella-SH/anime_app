@@ -37,7 +37,7 @@ class Anime {
   Map<String,dynamic> toMap(){
     return {
       'malId':malId,
-      'image':images!.jpg!.imageUrl!,   //llega hasta la imagen que queremos
+      'images': images != null ? images!.toMap() : null,
       'title':title,
       'episodes':episodes,
       'members':members,
@@ -56,7 +56,7 @@ class Anime {
     year = map['year'];
 
     if (map['image'] != null) {               //colocar entre los corchetes el nombre que este en la tabla
-      images = Images.fromMap(map['image']);
+      images = Images.fromMap(map['images']);
     }
   }
 
@@ -76,7 +76,7 @@ class Images {
   //para el repository
   Map<String,dynamic> toMap(){
     return {
-      'jpg':jpg!.imageUrl!,   //"!.toMap()"->para que llame al to map de la clase Jpg
+      'jpg': jpg != null ? jpg!.toMap() : null,
     };
   }
 
@@ -99,7 +99,7 @@ class Jpg {
   //para el repository
   Map<String,dynamic> toMap(){
     return {
-      'imageUrl':imageUrl,
+      'imageUrl': imageUrl,
     };
   }
 

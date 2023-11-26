@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 class AnimeDatabase{
 
   final int version=1;
-  final String databaseName='animes.db';       //PLURAL
+  final String databaseName='animes2.db';       //PLURAL
   final String tableName= 'animes_add';        //PLURAL
 
   Database? _db;
@@ -15,7 +15,7 @@ class AnimeDatabase{
     //abrir el directorio donde estan las databases y lo uno con el nombre de nuestra base se datos
     _db = await openDatabase(join(await getDatabasesPath(), databaseName),
         onCreate: (database, version){
-          String query= 'create table $tableName (malId integer primary key, image text, title text, episodes integer, members integer, year integer)';
+          String query= 'create table $tableName (malId integer primary key, images text, title text, episodes integer, members integer, year integer)';
           log(query);
           database.execute(query);
         }, version: version
