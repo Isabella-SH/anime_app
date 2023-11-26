@@ -1,3 +1,5 @@
+
+
 class Anime {
 
   int? malId;
@@ -32,7 +34,7 @@ class Anime {
   Map<String,dynamic> toMap(){
     return {
       'malId':malId,
-      'images':images!.toMap(),  //"!.toMap()"->para que llame al to map de la clase images
+      'image':images!.jpg!.imageUrl!,   //llega hasta la imagen que queremos
       'title':title,
       'episodes':episodes,
       'members':members,
