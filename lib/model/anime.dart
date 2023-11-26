@@ -32,7 +32,7 @@ class Anime {
   Map<String,dynamic> toMap(){
     return {
       'malId':malId,
-      'images':images,
+      'images':images!.toMap(),  //"!.toMap()"->para que llame al to map de la clase images
       'title':title,
       'episodes':episodes,
       'members':members,
@@ -55,7 +55,7 @@ class Images {
   //para el repository
   Map<String,dynamic> toMap(){
     return {
-      'jpg':jpg,
+      'jpg':jpg!.toMap(),   //"!.toMap()"->para que llame al to map de la clase Jpg
     };
   }
 }
