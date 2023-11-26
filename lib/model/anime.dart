@@ -9,13 +9,13 @@ class Anime {
   int? year;
 
   Anime(
-      {this.malId,
+      this.malId,
         this.images,
         this.title,
         this.episodes,
         this.members,
         this.year,
-       }
+
   );
 
   //recojemos la informacion de un pokemon de un json
@@ -37,7 +37,7 @@ class Anime {
   Map<String,dynamic> toMap(){
     return {
       'malId':malId,
-      'images': images != null ? images!.toMap() : null,
+      'images': images!.jpg!.imageUrl!,
       'title':title,
       'episodes':episodes,
       'members':members,

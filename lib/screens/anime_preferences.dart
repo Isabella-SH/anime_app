@@ -32,14 +32,39 @@ class _AnimePreferencesState extends State<AnimePreferences> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: _animes?.length?? 0 ,
-        itemBuilder: ((context,index){
-          return Card(child: Padding(
+      itemCount: _animes?.length ?? 0,
+      itemBuilder: ((context, index) {
+        final anime = _animes?[index];
+
+        return Card(
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Text(_animes?[index].title??''),
-          )
-          );
-        })
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Muestra la imagen si está disponible
+                if (anime?.images?.jpg?.imageUrl != null)
+                  Image.network(
+                    anime!.images!.jpg!.imageUrl!,
+                    height: 100, // Ajusta según sea necesario
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+
+                // Muestra el título del anime
+                Text(
+                  anime?.title ?? '',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+        );
+      }),
     );
   }
 }

@@ -34,12 +34,13 @@ class AnimeRepository{
 
     Database db= await AnimeDatabase().openDb();
 
-    //para un get solo llamar a la database y el nombre de que tabla necesito la informacion
-    final maps=await db.query(AnimeDatabase().tableName);
+    //crea una lista de mapeos, que es el registro de la base de datos de la tabla señalada
+    final List<Map<String,dynamic>> maps=await db.query('animes_add');
 
-    //convierto los maps, que se obtienen de la tabla, a objetos Anime
-    //retorno una lista de ello
-    return maps.map((map)=> Anime.fromMap(map)).toList();
+    //crea una lista, en donde cada index recorrido y asigno datos a un constructo de la clase "Anime"
+    return List.generate(maps.length, (i) {
+      return Anime(maps[i]['malId'], Images(Jpg(maps[i]['images'])), maps[i]['title'],maps[i]['episodes'],maps[i]['members'],maps[i]['year']);
+    });
   }
 
 }
