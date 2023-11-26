@@ -1,5 +1,9 @@
+import 'package:anime_app/model/anime.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+
+import '../services/anime_service.dart';
 
 class AnimeList extends StatefulWidget {
   const AnimeList({super.key});
@@ -9,13 +13,98 @@ class AnimeList extends StatefulWidget {
 }
 
 class _AnimeListState extends State<AnimeList> {
+
+  //variables
+  AnimeService? _animeService;
+  final _pageSize=25;
+  final PagingController<int,Anime> _pagingController= PagingController(firstPageKey: 1);
+
+  Future _fetchPage(int pageKey) async{
+
+    try{
+      //por cada llamada del metodo del servicio creo un arreglo de animes
+      final animes=(await _animeService!.getAll(pageKey)).data as List<Anime>;
+
+      //veo si el tamaño de animes es menor a 25, que el que quiero mostrar en cada paginacion
+      final isLastPage=animes.length<_pageSize;
+
+      if(isLastPage){ //si es menor a 25
+        _pagingController.appendLastPage(animes); //muestro el arreglo
+      }else{
+        final nextPageKey=pageKey+1; //creo otra pagina
+        //llamo al metod del servicio pasandole como parametro la pagina 2
+        _pagingController.appendPage(animes, nextPageKey);
+      }
+    }catch(error){
+      _pagingController.error=error;
+    }
+  }
+
+  @override
+  void initState(){
+    //inicialiazo el servicio
+    _animeService=AnimeService();
+    //llamo a fetchpage
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchPage(pageKey);
+    });
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Text("Esta es la vista de anime_list")
+    return PagedListView<int,Anime>(
+      scrollDirection: Axis.vertical, //crea cada paginacion horizontalmente o vertical
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<Anime>(
+          itemBuilder: (context,item,index){
+            return AnimeItem(anime:item); //cada indice de movies es un moviItem
+          }
+      ),
     );
   }
 }
+
+class AnimeItem extends StatefulWidget {
+
+  const AnimeItem({super.key, required this.anime});
+
+  //parametro
+  final Anime anime;
+
+  @override
+  State<AnimeItem> createState() => _AnimeItemState();
+}
+
+class _AnimeItemState extends State<AnimeItem> {
+
+  @override
+  Widget build(BuildContext context) {
+
+    //creo la imagen
+    final image=Image.network(widget.anime.images!.jpg!.imageUrl!);
+    final my_con= const Icon(
+      Icons.add,color:Colors.grey,
+    );
+
+    return Card(
+      child: ListTile(
+        leading: image,
+        title: Text(widget.anime.title!),
+        subtitle: Text(widget.anime.year != null ? widget.anime.year!.toString() : 'Year is not defined'), //CONVERTIR A STRING UN ATRIBUTO Y VALIDACION DE NULL
+        trailing: IconButton(
+          icon: my_con,
+          //dentro del click
+          onPressed: (){
+             },
+        ),
+      ),
+    );
+
+  }
+}
+
 
 
 
