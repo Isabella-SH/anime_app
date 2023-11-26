@@ -32,12 +32,43 @@ class _AnimePreferencesState extends State<AnimePreferences> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _animes?.length ?? 0,
-      itemBuilder: ((context, index) {
-        final anime = _animes![index];
-        return AnimeItem(anime: anime);
-      }),
+    return Scaffold(
+      body: ListView.builder(
+          itemCount: _animes?.length ?? 0,
+          itemBuilder: ((context, index) {
+            final anime = _animes![index];
+            return AnimeItem(anime: anime);
+          }
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+
+          int totalEpisodes = 0;
+          int totalMembers = 0;
+
+          _animes?.forEach((anime) {
+            totalEpisodes += anime.episodes ?? 0;
+            totalMembers += anime.members ?? 0;
+          });
+
+          showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context)
+              {return Container(
+                padding: EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Total Episodes: $totalEpisodes'),
+                    Text('Total Members: $totalMembers'),
+                  ],
+                ),
+              );
+              }
+          );
+        },
+      ),
     );
   }
 }
