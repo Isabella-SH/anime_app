@@ -42,6 +42,10 @@ class _AnimePreferencesState extends State<AnimePreferences> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+
+        backgroundColor: Colors.deepPurple,
+        child: Text("Modal View"),          //TEXTO EN EL BOTON
+
         onPressed: (){
 
           int totalEpisodes = 0;

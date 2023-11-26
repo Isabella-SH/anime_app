@@ -118,7 +118,16 @@ class _AnimeItemState extends State<AnimeItem> {
       child: ListTile(
         leading: image,
         title: Text(widget.anime.title!),
-        subtitle: Text(widget.anime.year != null ? widget.anime.year!.toString() : 'Year is not defined'), //CONVERTIR A STRING UN ATRIBUTO Y VALIDACION DE NULL
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            //TENER CUIDADO CON LOS ATRIBUTOS PORQUE PUEDEN SER NULOS!!!! AGREGAR VALIDACIONES
+            Text('Year: ' + (widget.anime.year != null ? widget.anime.year!.toString() : 'Year is not defined')),
+            Text(widget.anime.episodes != null ? widget.anime.episodes!.toString() : 'Episodes is not defined'),
+            Text(widget.anime.members != null ? widget.anime.members!.toString() : 'Members is not defined'),
+
+          ],
+        ),
         trailing: IconButton(
           icon: my_con,
           //dentro del click
