@@ -109,9 +109,9 @@ class _AnimeItemState extends State<AnimeItem> {
     final image=Image.network(widget.anime.images!.jpg!.imageUrl!);
 
     final my_con= _add? const Icon(
-      Icons.add,color:Colors.red,
+      Icons.delete,color:Colors.blue,
     ):const Icon(
-      Icons.add,color:Colors.grey,
+      Icons.add,color:Colors.blue,
     );
 
     return Card(
