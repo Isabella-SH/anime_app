@@ -1,4 +1,5 @@
 import 'package:anime_app/model/anime.dart';
+import 'package:anime_app/repositories/anime_repository.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -79,12 +80,37 @@ class AnimeItem extends StatefulWidget {
 
 class _AnimeItemState extends State<AnimeItem> {
 
+  //atributos
+  bool _add=false;
+  AnimeRepository? _animeRepository;
+
+  initialize()async{
+    //_favorite toma el valor que da el metodo del repositorie al pasarle cada entidad
+    _add=await _animeRepository?.isAdd(widget.anime)??false;
+    if (mounted){ //si ya se cargo toda la informacion
+      setState(() {
+        _add=_add;
+      });
+    }
+  }
+
+  @override
+  void initState(){
+    _animeRepository=AnimeRepository();
+    initialize();
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
 
     //creo la imagen
     final image=Image.network(widget.anime.images!.jpg!.imageUrl!);
-    final my_con= const Icon(
+
+    final my_con= _add? const Icon(
+      Icons.add,color:Colors.red,
+    ):const Icon(
       Icons.add,color:Colors.grey,
     );
 
@@ -97,7 +123,14 @@ class _AnimeItemState extends State<AnimeItem> {
           icon: my_con,
           //dentro del click
           onPressed: (){
-             },
+            //_favorite cambia
+            setState(() {
+              _add=!_add;
+            });
+            //se agrega o elimina del repository
+            //si es true lo insert, sino lo elimina
+            _add?_animeRepository?.insert(widget.anime):_animeRepository?.delete(widget.anime);
+          },
         ),
       ),
     );

@@ -1,5 +1,4 @@
 
-
 class Anime {
 
   int? malId;
@@ -49,13 +48,18 @@ class Anime {
   //convierte un map a objeto Pokemon
   //sirve para que convierta lo que devuleve la tabla "pokemons" de nuestra base de datos creada
   //para el getAll()
-  Anime.fromMap(Map<String, dynamic>map):
-        malId=map["malId"],
-        images=map["image"] != null ? new Images(new Jpg(map['image'].toString())),               //MAPEA HASTA LA CLASE MAS PROFUNDA
-        title=map["title"],
-        episodes=map["episodes"],
-        members=map["members"],
-        year=map["year"];
+  Anime.fromMap(Map<String, dynamic> map) {
+    malId = map['malId'];
+    title = map['title'];
+    episodes = map['episodes'];
+    members = map['members'];
+    year = map['year'];
+
+    if (map['image'] != null) {               //colocar entre los corchetes el nombre que este en la tabla
+      images = Images.fromMap(map['image']);
+    }
+  }
+
 
 }
 
@@ -76,6 +80,10 @@ class Images {
     };
   }
 
+  Images.fromMap(Map<String, dynamic> map) {
+    jpg = map['jpg'] != null ? Jpg.fromMap(map['jpg']) : null;
+  }
+
 }
 
 class Jpg {
@@ -93,6 +101,10 @@ class Jpg {
     return {
       'imageUrl':imageUrl,
     };
+  }
+
+  Jpg.fromMap(Map<String, dynamic> map) {
+    imageUrl = map['imageUrl'];
   }
 
 }
