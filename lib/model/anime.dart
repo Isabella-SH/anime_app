@@ -19,6 +19,10 @@ class Anime {
        }
   );
 
+  //recojemos la informacion de un pokemon de un json
+  //claave: recibe primero el tipo de dato
+  //dynamic: cualquier valor
+  //                    clave,valor                 asi se llama en el json
   Anime.fromJson(Map<String, dynamic> json) {
     malId = json['mal_id'];
     images =
@@ -42,12 +46,23 @@ class Anime {
     };
   }
 
+  //convierte un map a objeto Pokemon
+  //sirve para que convierta lo que devuleve la tabla "pokemons" de nuestra base de datos creada
+  //para el getAll()
+  Anime.fromMap(Map<String, dynamic>map):
+        malId=map["malId"],
+        images=map["image"] != null ? new Images(new Jpg(map['image'].toString())),               //MAPEA HASTA LA CLASE MAS PROFUNDA
+        title=map["title"],
+        episodes=map["episodes"],
+        members=map["members"],
+        year=map["year"];
+
 }
 
 class Images {
   Jpg? jpg;
 
-  Images({this.jpg});
+  Images(this.jpg);
 
   Images.fromJson(Map<String, dynamic> json) {
     jpg = json['jpg'] != null ? new Jpg.fromJson(json['jpg']) : null;
@@ -57,15 +72,16 @@ class Images {
   //para el repository
   Map<String,dynamic> toMap(){
     return {
-      'jpg':jpg!.toMap(),   //"!.toMap()"->para que llame al to map de la clase Jpg
+      'jpg':jpg!.imageUrl!,   //"!.toMap()"->para que llame al to map de la clase Jpg
     };
   }
+
 }
 
 class Jpg {
   String? imageUrl;
 
-  Jpg({this.imageUrl});
+  Jpg(this.imageUrl);
 
   Jpg.fromJson(Map<String, dynamic> json) {
     imageUrl = json['image_url'];
@@ -78,4 +94,5 @@ class Jpg {
       'imageUrl':imageUrl,
     };
   }
+
 }
